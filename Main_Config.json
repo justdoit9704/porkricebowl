@@ -1,0 +1,25 @@
+{
+  "name": "porkricegrab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "Link": {
+    "Grab": "https://merchant.grab.com/portal",
+    "Shopee": ""
+  },
+  "private": true,
+  "Path": {
+    "Downloads": "{}\\Downloads",
+    "PDF": "{}\\pdf",
+    "Excel": "{}\\excel",
+    "Reports": "{}\\Reports"
+  },
+  "User": {
+    "GID": "",
+    "GPassword": "",
+    "SID": "",
+    "SPassword": ""
+  },
+  "Deduction": 0.3,
+  "SST": 0.08
+}
