@@ -137,6 +137,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
                 for n in range(9):
                     n = (i-1)*9+n
                     try:
+                        iSelenium.presenceElemWait(driver, "xpath",
+                                                   f'//tr[@data-row-key="{n}"]//child::td//child::label')
                         row = driver.find_element(By.XPATH, f'//tr[@data-row-key="{n}"]//child::td//child::label')
                         row.click()
                     except NoSuchElementException:
