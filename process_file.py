@@ -27,10 +27,11 @@ def start(curPath, userInfo, date_list_yymmdd):
         date = (datetime.strptime(date, "%Y-%m-%d")).strftime("%Y%m%d")
         print(date + "\nProcessing Reports......")
 
-        all_text = ""  # 用于存放整个 PDF 的文字
+        file_num = sum(1 for f in os.listdir(JSON["Path"]["PDF"].format(user_path)) if date in f)
 
-        for i in range(3):
+        for i in range(file_num):
             i+=1
+            all_text = ""  # 用于存放整个 PDF 的文字
             if os.path.exists(JSON["Path"]["PDF"].format(user_path) + "\\{}_{}.pdf".format(date,i)):
                 # 读取PDF文字
                 with open(os.devnull, "w") as f, redirect_stderr(f): # 临时屏蔽 stderr
@@ -90,6 +91,7 @@ def start(curPath, userInfo, date_list_yymmdd):
                 dfs.append(df)
             else:
                 continue
+
     print("Completed Reports......")
 
     # csv file 处理
