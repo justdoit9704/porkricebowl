@@ -134,8 +134,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
                 all_tick.click()
                 time.sleep(2)
 
-                for n in range(9):
-                    n = (i-1)*9+n
+                for n in range(10):
+                    n = (i-1)*10+n
                     try:
                         # iSelenium.presenceElemWait(driver, "xpath",
                         #                            f'//tr[@data-row-key="{n}"]//child::td//child::label')
