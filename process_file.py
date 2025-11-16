@@ -43,7 +43,7 @@ def start(curPath, userInfo, date_list_yymmdd):
 
                 # 正则：(\d+)x\s* 捕获数量
                 # ([A-R]|S[1-6]|Omelette Egg|Rice) 捕获标记，不带 ')'
-                pattern = r'(\d+)x\s*(Omelette Egg|Rice|S[1-6]|[A-R])'
+                pattern = r'(\d+)x\s*(Omelette Egg|Rice|S[1-6]|[A-R]|Z[1-4])'
 
                 # 找到所有匹配
                 matches = re.findall(pattern, all_text)
@@ -65,6 +65,11 @@ def start(curPath, userInfo, date_list_yymmdd):
                 # Egg (B,D,F,K,M)
                 df_dict['Egg'] = sum(counted.get(c, 0) for c in ['B', 'D', 'F', 'K', 'M'])
 
+                # Noodle Egg (Z1,Z3)
+                df_dict['Noodle Normal'] = sum(counted.get(c, 0) for c in ['Z1', 'Z3'])
+                # Noodle Egg (Z2,Z4)
+                df_dict['Noodle Egg'] = sum(counted.get(c, 0) for c in ['Z2', 'Z4'])
+
                 # Q, R
                 df_dict['Q'] = counted.get('Q', 0)
                 df_dict['R'] = counted.get('R', 0)
@@ -73,13 +78,29 @@ def start(curPath, userInfo, date_list_yymmdd):
                 df_dict['Omelette Egg'] = counted.get('Omelette Egg', 0)
                 df_dict['Rice'] = counted.get('Rice', 0)
 
+                # H,H1,O,O1
+                df_dict['H'] = counted.get('H', 0)
+                df_dict['H1'] = counted.get('H1', 0)
+                df_dict['O'] = counted.get('O', 0)
+                df_dict['O1'] = counted.get('O1', 0)
+
+                df_dict['H_cnt'] = counted.get('H', 0)
+                df_dict['H1_cnt'] = counted.get('H1', 0)
+                df_dict['O_cnt'] = counted.get('O', 0)
+                df_dict['O1_cnt'] = counted.get('O1', 0)
+
                 # S = sum(S1-S6)
                 df_dict['S'] = sum(counted.get(f'S{i}', 0) for i in range(1, 7))
 
                 # A-R（排除 Q,R）
-                for c in 'ABCDEFGHIJKLMNOP':
+                for c in 'ABCDEFGIJKLMNP':
                     if c not in ['Q', 'R']:
                         df_dict[c] = counted.get(c, 0)
+
+                # Z1,Z2,Z3,Z4
+                for i in range(1, 5):
+                    key = f'Z{i}'
+                    df_dict[key] = counted.get(key, 0)
 
                 # S1-S6
                 for i in range(1, 7):
@@ -160,15 +181,23 @@ def start(curPath, userInfo, date_list_yymmdd):
         # order集合
         df_all = pd.concat(dfs, ignore_index=True, sort=False)
         df_all = df_all.groupby(["Date"])[
-            ['Normal', 'Egg', 'Q', 'R', 'Omelette Egg', 'Rice', 'S', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-             'K', 'L', 'M', 'N', 'O', 'P', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6']].sum().reset_index()
+            ['Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'H1', 'O', 'O1', 'S',
+             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
+             'Z1', 'Z3', 'Z2', 'Z4',
+             'H_cnt', 'H1_cnt', 'O_cnt', 'O1_cnt',
+             'S1', 'S2', 'S3', 'S4', 'S5', 'S6']].sum().reset_index()
 
         # order + sales 集合
         df_merged = pd.merge(df_f, df_all, how="left", left_on="date",  right_on="Date")
 
         # df_merged = df_merged.drop(columns=["Date"])
 
-        df_merged = df_merged[['date', 'Normal', 'Egg', 'Q', 'R', 'Omelette Egg', 'Rice', 'S', 'Sales', 'Discount', 'Deduction', 'SST', 'Marketing fees', 'Net Amount', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6']]
+        df_merged = df_merged[['date', 'Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'H1', 'O', 'O1', 'S',
+                               'Sales', 'Discount', 'Deduction', 'SST', 'Marketing fees', 'Net Amount',
+                               'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
+                               'Z1', 'Z3', 'Z2', 'Z4',
+                               'H_cnt', 'H1_cnt', 'O_cnt', 'O1_cnt',
+                               'S1', 'S2', 'S3', 'S4', 'S5', 'S6']]
 
         # 构建文件名
         ShareWork.createFolder(JSON["Path"]["Reports"].format(user_path))
