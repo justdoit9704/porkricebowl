@@ -78,14 +78,14 @@ def start(curPath, userInfo, date_list_yymmdd):
                 df_dict['Omelette Egg'] = counted.get('Omelette Egg', 0)
                 df_dict['Rice'] = counted.get('Rice', 0)
 
-                # H,H1,O,O1
+                # H,HB,O,O1
                 df_dict['H'] = counted.get('H', 0)
-                df_dict['H1'] = counted.get('H1', 0)
+                df_dict['HB'] = counted.get('HB', 0)
                 df_dict['O'] = counted.get('O', 0)
                 df_dict['O1'] = counted.get('O1', 0)
 
                 df_dict['H_cnt'] = counted.get('H', 0)
-                df_dict['H1_cnt'] = counted.get('H1', 0)
+                df_dict['HB_cnt'] = counted.get('HB', 0)
                 df_dict['O_cnt'] = counted.get('O', 0)
                 df_dict['O1_cnt'] = counted.get('O1', 0)
 
@@ -181,10 +181,10 @@ def start(curPath, userInfo, date_list_yymmdd):
         # order集合
         df_all = pd.concat(dfs, ignore_index=True, sort=False)
         df_all = df_all.groupby(["Date"])[
-            ['Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'H1', 'O', 'O1', 'S',
+            ['Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'HB', 'O', 'O1', 'S',
              'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
              'Z1', 'Z3', 'Z2', 'Z4',
-             'H_cnt', 'H1_cnt', 'O_cnt', 'O1_cnt',
+             'H_cnt', 'HB_cnt', 'O_cnt', 'O1_cnt',
              'S1', 'S2', 'S3', 'S4', 'S5', 'S6']].sum().reset_index()
 
         # order + sales 集合
@@ -192,11 +192,11 @@ def start(curPath, userInfo, date_list_yymmdd):
 
         # df_merged = df_merged.drop(columns=["Date"])
 
-        df_merged = df_merged[['date', 'Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'H1', 'O', 'O1', 'S',
+        df_merged = df_merged[['date', 'Normal', 'Egg', 'Q', 'R', 'Noodle Normal', 'Noodle Egg', 'Omelette Egg', 'Rice', 'H', 'HB', 'O', 'O1', 'S',
                                'Sales', 'Discount', 'Deduction', 'SST', 'Marketing fees', 'Net Amount',
                                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
                                'Z1', 'Z3', 'Z2', 'Z4',
-                               'H_cnt', 'H1_cnt', 'O_cnt', 'O1_cnt',
+                               'H_cnt', 'HB_cnt', 'O_cnt', 'O1_cnt',
                                'S1', 'S2', 'S3', 'S4', 'S5', 'S6']]
 
         # 构建文件名

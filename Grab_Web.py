@@ -185,7 +185,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     start_date_elem.click()
     start_date_elem.send_keys(Keys.CONTROL, 'a')  # 全选
     # time.sleep(2)
-    start_date_elem.send_keys(min_date)
+    # print((datetime.strptime(min_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
+    start_date_elem.send_keys((datetime.strptime(min_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
     start_date_elem.send_keys(Keys.ENTER)
 
     time.sleep(2)
@@ -197,7 +198,7 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
                                     '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[3]/input')
     end_date_elem.click()
     end_date_elem.send_keys(Keys.CONTROL, 'a')  # 全选
-    end_date_elem.send_keys(max_date)
+    end_date_elem.send_keys((datetime.strptime(max_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
     end_date_elem.send_keys(Keys.ENTER)
 
     # 下载
