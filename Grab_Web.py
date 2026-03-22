@@ -63,18 +63,18 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     driver.find_element(By.XPATH,'//*[@id="Username"]').send_keys(userInfo[0])
 
     time.sleep(5)
-    driver.find_element(By.XPATH, '//*[@id="root"]/section/div/div[2]/div[1]/div/form/div/div[3]/div/div/span/button').click()
+    driver.find_element(By.XPATH, '//span[text()="Continue"]').click()
 
     # Password
     iSelenium.presenceElemWait(driver, "xpath", '//*[@id="password"]')
     driver.find_element(By.XPATH,'//*[@id="password"]').send_keys(userInfo[1])
 
     time.sleep(5)
-    driver.find_element(By.XPATH, '//*[@id="root"]/section/div/div[2]/div[1]/div/form/button').click()
+    driver.find_element(By.XPATH, '//span[text()="Continue"]').click()
 
-    # close notic
-    iSelenium.presenceElemWait(driver, "xpath", '/html/body/div[2]/div/div[2]/div/div[2]/div/div/div/div[3]/button[1]')
-    driver.find_element(By.XPATH, '/html/body/div[2]/div/div[2]/div/div[2]/div/div/div/div[3]/button[1]').click()
+    # close notice
+    iSelenium.presenceElemWait(driver, "xpath", '//span[text()="Close"]')
+    driver.find_element(By.XPATH, '//span[text()="Close"]').click()
 
     # order page
     print("order page processs..........")
@@ -86,28 +86,28 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-tab-history"]').click()
 
     # Complete status
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-history"]/div/div[1]/div[2]/div/div/span[2]')
+    iSelenium.presenceElemWait(driver, "xpath", '//*[@title="All"]')
 
-    recp_status_elem = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-history"]/div/div[1]/div[2]/div/div/span[2]')
+    recp_status_elem = driver.find_element(By.XPATH, '//*[@title="All"]')
     recp_status_elem.click()
 
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="food"]/div[2]/div/div/div[2]/div/div/div/div[2]/div')
-    driver.find_element(By.XPATH, '//*[@id="food"]/div[2]/div/div/div[2]/div/div/div/div[2]/div').click()
+    iSelenium.presenceElemWait(driver, "xpath", '//*[@title="Completed"]')
+    driver.find_element(By.XPATH, '//*[@title="Completed"]').click()
 
     for date in date_range:
         # 日历
         print(date + "\nProcessing......")
-        iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-history"]/div/div[1]/div[1]/div/div')
-        driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-history"]/div/div[1]/div[1]/div/div').click()
+        iSelenium.presenceElemWait(driver, "xpath", '//input[@placeholder="Select date"]')
+        driver.find_element(By.XPATH, '//input[@placeholder="Select date"]').click()
 
-        date_elem = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-history"]/div/div[1]/div[1]/div/div/input')
+        date_elem = driver.find_element(By.XPATH, '//input[@placeholder="Select date"]')
         date_elem.send_keys(Keys.CONTROL, 'a')  # 全选
         date_elem.send_keys(date)
         date_elem.send_keys(Keys.ENTER)
 
         # 检查今天的order数量
-        iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-history"]/div/div[2]/div[3]/div/div/div[2]')
-        order_num_xpath = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-history"]/div/div[2]/div[3]/div/div/div[2]')
+        iSelenium.presenceElemWait(driver, "xpath", '//div[text()="Completed orders"]/following-sibling::div')
+        order_num_xpath = driver.find_element(By.XPATH, '//div[text()="Completed orders"]/following-sibling::div')
         print("Order Number: " + order_num_xpath.text.strip())
 
         time.sleep(1)
@@ -121,8 +121,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
             i+=1
             if i == 1:
                 # 选择前10账单
-                iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-history"]/div/div[3]/div/div/div/div/div[1]/table/thead/tr/th[1]/div/label/span/input')
-                all_tick = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-history"]/div/div[3]/div/div/div/div/div[1]/table/thead/tr/th[1]/div/label/span/input')
+                iSelenium.presenceElemWait(driver, "xpath", '//input[@type="checkbox" and @aria-label="Select all" and not(@disabled)]')
+                all_tick = driver.find_element(By.XPATH, '//input[@type="checkbox" and @aria-label="Select all" and not(@disabled)]')
                 time.sleep(2)
                 if all_tick.is_enabled():
                     all_tick.click()
@@ -147,10 +147,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
                         break
 
             # 下载账单
-            iSelenium.presenceElemWait(driver, "xpath",
-                                           '//*[@id="rc-tabs-0-panel-history"]/div/div[4]/div/div[1]/div[1]/div[2]/div/div/button')
-            driver.find_element(By.XPATH,
-                                    '//*[@id="rc-tabs-0-panel-history"]/div/div[4]/div/div[1]/div[1]/div[2]/div/div/button').click()
+            iSelenium.presenceElemWait(driver, "xpath", '//button[@data-testid="printSelectedRow"]')
+            driver.find_element(By.XPATH, '//button[@data-testid="printSelectedRow"]').click()
 
             dt = datetime.strptime(date, "%a, %d %b %Y")
             file_path = os.path.join(download_path, "ReceiptMultipleOrder.pdf")
@@ -169,8 +167,7 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     # //*[@id="root"]/div/div/div[1]/aside/div[1]/div[1]/ul/li[5]/
 
     # 先等开始日期的xpath
-    iSelenium.presenceElemWait(driver, "xpath",
-                               '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[1]/input')
+    iSelenium.presenceElemWait(driver, "xpath", '//input[@placeholder="Start date"]')
 
     # 确保没有弹窗出来
     driver.refresh()
@@ -184,8 +181,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
 
     # 开始日期
     print('Start Date:' + (datetime.strptime(min_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[1]/input')
-    start_date_elem = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[1]/input')
+    iSelenium.presenceElemWait(driver, "xpath", '//input[@placeholder="Start date"]')
+    start_date_elem = driver.find_element(By.XPATH, '//input[@placeholder="Start date"]')
     start_date_elem.click()
     start_date_elem.send_keys(Keys.CONTROL, 'a')  # 全选
     # time.sleep(2)
@@ -198,9 +195,9 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     # 结束日期
     print('End Date:' + (datetime.strptime(max_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
     iSelenium.presenceElemWait(driver, "xpath",
-                               '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[3]/input')
+                               '//input[@placeholder="End date"]')
     end_date_elem = driver.find_element(By.XPATH,
-                                    '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[3]/input')
+                                    '//input[@placeholder="End date"]')
     end_date_elem.click()
     end_date_elem.send_keys(Keys.CONTROL, 'a')  # 全选
     end_date_elem.send_keys((datetime.strptime(max_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
@@ -208,8 +205,8 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
 
     # 下载
     time.sleep(2)
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/span/button')
-    driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/span/button').click()
+    iSelenium.presenceElemWait(driver, "xpath", '//span[text()="Download"]')
+    driver.find_element(By.XPATH, '//span[text()="Download"]').click()
 
     # print(download_path)
     latest_file = get_latest_file(download_path, 60)
