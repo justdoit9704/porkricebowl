@@ -17,6 +17,7 @@ def get_latest_file(download_dir, timeout=30):
     等待下载完成后，返回目录中最新的文件名
     """
     seconds = 0
+    latest_file = None
     while seconds < timeout:
         files = os.listdir(download_dir)
         if files:
@@ -76,8 +77,9 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     driver.find_element(By.XPATH, '/html/body/div[2]/div/div[2]/div/div[2]/div/div/div/div[3]/button[1]').click()
 
     # order page
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="root"]/div/div/div[1]/aside/div[1]/div[1]/ul/li[3]/div')
-    driver.find_element(By.XPATH, '//*[@id="root"]/div/div/div[1]/aside/div[1]/div[1]/ul/li[3]/div').click()
+    print("order page processs..........")
+    iSelenium.presenceElemWait(driver, "xpath", '//*[@aria-label="orders"]')
+    driver.find_element(By.XPATH, '//*[@aria-label="orders"]').click()
 
     # history
     iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-tab-history"]')
@@ -161,8 +163,9 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     print("Start Download Grab Excel File......")
 
     # Finace Page
-    iSelenium.presenceElemWait(driver, "xpath", '//*[@id="root"]/div/div/div[1]/div/aside/div[1]/div[1]/ul/li[5]/div')
-    driver.find_element(By.XPATH, '//*[@id="root"]/div/div/div[1]/div/aside/div[1]/div[1]/ul/li[5]/div').click()
+    print("Finace page process..........")
+    iSelenium.presenceElemWait(driver, "xpath", '//*[@data-testid="financeButton"]')
+    driver.find_element(By.XPATH, '//*[@data-testid="financeButton"]').click()
     # //*[@id="root"]/div/div/div[1]/aside/div[1]/div[1]/ul/li[5]/
 
     # 先等开始日期的xpath
@@ -180,6 +183,7 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
         pass
 
     # 开始日期
+    print('Start Date:' + (datetime.strptime(min_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
     iSelenium.presenceElemWait(driver, "xpath", '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[1]/input')
     start_date_elem = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[1]/input')
     start_date_elem.click()
@@ -192,6 +196,7 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
     time.sleep(2)
 
     # 结束日期
+    print('End Date:' + (datetime.strptime(max_date, "%Y-%m-%d")).strftime("%#d %b %Y"))
     iSelenium.presenceElemWait(driver, "xpath",
                                '//*[@id="rc-tabs-0-panel-transactions"]/div/div/div[2]/div/div/span[1]/div/div/div[3]/input')
     end_date_elem = driver.find_element(By.XPATH,
