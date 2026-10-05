@@ -151,7 +151,7 @@ def start(curpath, userInfo, date_range, date_list_yymmdd):
             driver.find_element(By.XPATH, '//button[@data-testid="printSelectedRow"]').click()
 
             dt = datetime.strptime(date, "%a, %d %b %Y")
-            file_path = os.path.join(download_path, "ReceiptMultipleOrder.pdf")
+            file_path = os.path.join(download_path, "Merchant Portal.pdf")
             final_pdf_path = os.path.join(pdf_path, "{}_{}.{}".format(dt.strftime("%Y%m%d"), i, "pdf"))
 
             shareWork.checkfileExist(file_path, 60)
